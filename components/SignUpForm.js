@@ -12,8 +12,15 @@ import {
 import * as firebase from 'firebase';
 
 
+
+
+
 export default class Form extends Component {
-  
+  state = {
+    email: '', 
+    password: '',
+    error: '',
+  }
     render()
     {
       return(
@@ -26,6 +33,7 @@ export default class Form extends Component {
             returnKeyType="next"
             autoCapitalize="none"
             autoCorrect={false}
+            onChangeText={(emails)=>this.setState({email:emails})}
             onSubmitEditing={()=> {
                 this.passwordInput.focus();
             }}
@@ -38,7 +46,7 @@ export default class Form extends Component {
             returnKeyType="next"
             placeholderTextColor="rgba(255,255,255,0.7)"
             style ={styles.inputBoxPas}
-          
+            onChangeText={(pass)=>this.setState({password:pass})}
             ref={(input)=>this.passwordInput = input}
             onSubmitEditing={()=>this.confirmPass.focus()}
             />
@@ -52,8 +60,18 @@ export default class Form extends Component {
             ref={(input)=>this.confirmPass = input}
             />
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText} 
-              >Signup</Text>
+                <Button style={styles.button} 
+                title="Signup"
+                onPress={  () => firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password)
+                .then(()=> {
+                  console.debug("Hello")
+                  this.props.navigation.navigate('Login');
+                }).catch((error)=> {
+                  this.setState({error: error})
+                  console.debug("eror"); 
+                  console.debug(error);
+                })} 
+              >Signup</Button>
             </TouchableOpacity>
         </View>
       )
@@ -91,9 +109,12 @@ export default class Form extends Component {
         button: {
             width: 300,
             backgroundColor:'#1c313a', 
+            fontSize:16, 
+            fontWeight:'500',
             borderRadius:25,
+            color: '#ffffff',
             marginVertical:10, 
-            paddingVertical:12
+            paddingVertical:8
         },
         buttonText:{
             fontSize: 16, 

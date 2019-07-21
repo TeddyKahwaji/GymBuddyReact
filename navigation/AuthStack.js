@@ -1,14 +1,13 @@
 import { createStackNavigator } from "react-navigation";
 import Login from "../screens/Login";
 import Signup from "../screens/Signup";
+import LoadingScreen from "../screens/LoadingScreen";
 
 export default createStackNavigator(
   {
-    Login,
-    Signup
-  },
-  {
-    initialRouteName: "Login",
-    headerMode : 'none'
+    //Browse: Browse, 
+    LoadingScreen: LoadingScreen,
+    Login:Login,
+    Signup: Signup, 
   }
 );

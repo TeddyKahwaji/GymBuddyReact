@@ -13,4 +13,3 @@ const AppNavigation = createSwitchNavigator(
 );
 
 export default createAppContainer(AppNavigation);
-export {default as Firebase} from '../components/backend/Firebase'
