@@ -7,18 +7,19 @@ import {
   KeyboardAvoidingView
 } from 'react-native'
 
-import Logo from '../Logo'
-import Form from '../LoginForm'
-export default class Signup extends Component {
+import Logo from '../components/Logo'
+import Form from '../components/LoginForm'
+export default class Login extends Component {
   render()
   {
     return(
-      <KeyboardAvoidingView behavior="padding" style ={styles.container}>
+      <KeyboardAvoidingView style ={styles.container}>
         <Logo/>
-        <Form type="Signup"/>
+        <Form type="Login"/>
         <View style={styles.signupTextCont}>
-            <Text style={styles.signupText}>Already have an account?</Text>
-            <Text style={styles.signUpButton}> Sign in</Text>
+            <Text style={styles.signupText}>Don't have an account yet?</Text>
+            <Text style={styles.signUpButton}
+            onPress={()=> this.props.navigation.navigate("Signup")}> Signup</Text>
         </View>
       </KeyboardAvoidingView>
     )

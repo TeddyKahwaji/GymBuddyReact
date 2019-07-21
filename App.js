@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+
 import {
   StyleSheet, 
   Text, 
@@ -6,26 +7,42 @@ import {
   StatusBar
 } from 'react-native'
 
+import * as firebase from "firebase";
 
-import AppNavigator from './navigation/AppNavigator';
-import Signup from './components/Pages/Signup';
-import {createStackNavigator} from 'react-navigation'
-import Login from './components/Pages/Login';
+import Signup from './screens/Signup';
 
-export default class App extends Component {
-  render()
-  {
-    return(
-      <Signup/>
-    
-    )
+import Login from './screens/Login';
+
+import RootNavigator from "./navigation"
+
+export default class App extends React.Component {
+
+  state = {
+    email: '',
+    password: '',
   }
+  componentWillMount()
+  {
+    const firebaseConfig = {
+      apiKey: "AIzaSyC969z_YyMij1HnvdB1c0dnnb4rusJhAzE",
+      authDomain: "gymbuddyreact.firebaseapp.com",
+      databaseURL: "https://gymbuddyreact.firebaseio.com",
+      projectId: "gymbuddyreact",
+      storageBucket: "gymbuddyreact.appspot.com",
+      
+    }
+   
+    firebase.initializeApp(firebaseConfig);
+          
+      
+    }
+    render()
+    {
+      return <RootNavigator />
+    }
+ 
 }
 
-const AppStackNavigator = createStackNavigator({
-  Login:Login
-  
-})
 
 const styles = StyleSheet.create({
   container: {

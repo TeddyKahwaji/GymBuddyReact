@@ -5,14 +5,15 @@ import {
   View, 
   StatusBar,
   TextInput, 
-  TouchableOpacity
+  TouchableOpacity, 
+  Button
 
 } from 'react-native'
-
+import * as firebase from 'firebase';
 
 
 export default class Form extends Component {
-   
+  
     render()
     {
       return(
@@ -25,20 +26,34 @@ export default class Form extends Component {
             returnKeyType="next"
             autoCapitalize="none"
             autoCorrect={false}
-            onSubmitEditing={()=>this.passwordInput.focus()}
+            onSubmitEditing={()=> {
+                this.passwordInput.focus();
+            }}
+            
             style ={styles.inputBox}/>
        
        <TextInput 
             placeholder="Password"
             secureTextEntry
-            returnKeyType="go"
+            returnKeyType="next"
             placeholderTextColor="rgba(255,255,255,0.7)"
             style ={styles.inputBoxPas}
           
             ref={(input)=>this.passwordInput = input}
+            onSubmitEditing={()=>this.confirmPass.focus()}
+            />
+         <TextInput 
+            placeholder="Confirm Password"
+            secureTextEntry
+            returnKeyType="go"
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            style ={styles.inputBoxPas}
+          
+            ref={(input)=>this.confirmPass = input}
             />
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>{this.props.type}</Text>
+                <Text style={styles.buttonText} 
+              >Signup</Text>
             </TouchableOpacity>
         </View>
       )
