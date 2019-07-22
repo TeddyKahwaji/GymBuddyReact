@@ -9,6 +9,7 @@ import {
   Button
 
 } from 'react-native'
+
 import * as firebase from 'firebase';
 
 
@@ -20,6 +21,7 @@ export default class Form extends Component {
     email: '', 
     password: '',
     error: '',
+    disableForm:false, 
   }
     render()
     {
@@ -32,9 +34,11 @@ export default class Form extends Component {
             placeholderTextColor="rgba(255,255,255,0.7)"
             returnKeyType="next"
             autoCapitalize="none"
+            
             autoCorrect={false}
             onChangeText={(emails)=>this.setState({email:emails})}
             onSubmitEditing={()=> {
+
                 this.passwordInput.focus();
             }}
             
@@ -48,7 +52,7 @@ export default class Form extends Component {
             style ={styles.inputBoxPas}
             onChangeText={(pass)=>this.setState({password:pass})}
             ref={(input)=>this.passwordInput = input}
-            onSubmitEditing={()=>this.confirmPass.focus()}
+            onSubmitEditing={()=> this.confirmPass.focus()}
             />
          <TextInput 
             placeholder="Confirm Password"
@@ -60,15 +64,15 @@ export default class Form extends Component {
             ref={(input)=>this.confirmPass = input}
             />
             <TouchableOpacity style={styles.button}>
-                <Button style={styles.button} 
+                <Button style={styles.button}
+                disabled={this.state.disableForm} 
                 title="Signup"
                 onPress={  () => firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password)
                 .then(()=> {
-                  console.debug("Hello")
+                
                   this.props.navigation.navigate('Login');
                 }).catch((error)=> {
-                  this.setState({error: error})
-                  console.debug("eror"); 
+                 
                   console.debug(error);
                 })} 
               >Signup</Button>
