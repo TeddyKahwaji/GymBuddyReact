@@ -7,6 +7,14 @@ export default createStackNavigator(
       LoadingScreen:LoadingScreen,
     Login:Login,
     Signup:Signup,
+
+
+   
+  }, 
+  {
+    headerMode: 'none',
+    header: 'none',
+    mode: 'modal'
   }
 );
 

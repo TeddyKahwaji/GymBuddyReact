@@ -8,7 +8,11 @@ const AppNavigation = createSwitchNavigator(
     AuthStack
   },
   {
-    initialRouteName: "AuthStack"
+    initialRouteName: "AuthStack", 
+    headerMode: 'none',
+    header: 'none',
+    mode: 'modal'
+
   }
 );
 
