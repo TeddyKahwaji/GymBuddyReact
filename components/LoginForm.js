@@ -9,12 +9,66 @@ import {
 
 } from 'react-native'
 
+import {LoadingScreen} from "../screens/LoadingScreen"
+import * as firebase from "firebase";
+
 
 
 export default class Form extends Component {
-   
+  constructor() {
+    super();
+    this.state = {
+      email:"", 
+      password:"",
+
+      emailValidator: true,
+      passwordValidator: true,
+
+      loginDisabled: true, 
+      errorMessage: "", 
+      error: false
+    };
+  }
+
+  validate(text, type)
+  {
+    if(type == "email")
+    {
+      this.setState({email:text})
+    }
+    else if(type == "password")
+    {
+      this.setState({password:text})
+    }
+  }
+
+
+  SignIn(email,password)
+  {
+    firebase.auth().signInWithEmailAndPassword(email,password).then(()=>
+    {
+      this.props.navigation.navigate("LoadingScreen");
+     
+     
+    }
+    ).catch((error)=> {
+      if(error.code =="auth/wrong-password")
+      {
+        this.setState({passwordValidator:false, errorMessage:error.message})
+        this.passwordInput.focus();
+      }
+      if(error.code == "auth/invalid-email")
+      {
+        this.setState({emailValidator: false, errorMessage: error.message})
+        this.emailInput.focus();
+      }
+     
+    });
+    
+  }
     render()
     {
+      
       return(
        <View style ={styles.container}>
        
@@ -23,21 +77,23 @@ export default class Form extends Component {
             keyboardType="email-address"
             placeholderTextColor="rgba(255,255,255,0.7)"
             returnKeyType="next"
+            ref={(input)=>this.emailInput = input}
             autoCapitalize="none"
             autoCorrect={false}
             onSubmitEditing={()=>this.passwordInput.focus()}
-            style ={styles.inputBox}/>
+            onChangeText={(text,type) =>this.validate(text,"email")}
+            style ={[styles.inputBox,  !this.state.emailValidator ? styles.error : null]}/>
        
        <TextInput 
             placeholder="Password"
             secureTextEntry
             returnKeyType="go"
             placeholderTextColor="rgba(255,255,255,0.7)"
-            style ={styles.inputBoxPas}
-          
+            style ={[styles.inputBoxPas, !this.state.passwordValidator ? styles.error : null]}
+            onChangeText={(text,type)=> this.validate(text,"password")}
             ref={(input)=>this.passwordInput = input}
             />
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={()=>this.SignIn(this.state.email,this.state.password)}>
                 <Text style={styles.buttonText}>{this.props.type}</Text>
             </TouchableOpacity>
         </View>
@@ -73,6 +129,11 @@ export default class Form extends Component {
             paddingHorizontal:16,
 
         }, 
+        error: {
+          borderColor: "red",
+          borderWidth: 3, 
+        
+        },
         button: {
             width: 300,
             backgroundColor:'#1c313a', 
