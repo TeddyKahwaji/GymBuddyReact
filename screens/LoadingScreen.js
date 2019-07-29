@@ -10,23 +10,18 @@ import {
 } from "react-native";
 
 
+
 export default class App extends Component {
   
-  componentDidUpdate()
-  {
-   this.checkIfLoggedIn();
-
-   
-  }
-
+  
   checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.props.navigation.navigate("Login");
-        console.warn("it got here");
+       
       } else {
         this.props.navigation.navigate("Signup");
-        console.warn("did not detect user login");
+       
       }
     });
   };
@@ -37,6 +32,7 @@ export default class App extends Component {
         <LoadingScreen
           style={styles.image}
           source={require("../assets/images/logo.png")}
+          onAnimationEnd={this.checkIfLoggedIn}
         />
         
       </View>

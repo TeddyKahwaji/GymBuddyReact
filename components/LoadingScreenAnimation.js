@@ -16,7 +16,7 @@ import firebase from 'firebase'
       duration: 1500,
       delay: 1000,
       useNativeDriver: true,
-    }).start();
+    }).start(()=>this.props.onAnimationEnd());
   }
 
   render() {

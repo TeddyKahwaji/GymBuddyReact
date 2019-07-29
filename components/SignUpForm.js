@@ -105,8 +105,7 @@ export default class Form extends Component {
           this.emailInput.focus();
         }
         this.state.error = true;
-        console.warn(error);
-        console.warn(error.message);
+       
       });
   }
   render() {
