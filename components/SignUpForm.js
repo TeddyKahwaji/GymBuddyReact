@@ -22,18 +22,16 @@ export default class Form extends Component {
       emailValidator: true,
       passwordValidator: true,
 
-      signupDisabled: true, 
-      errorMessage: "", 
+      signupDisabled: true,
+      errorMessage: "",
       error: false
     };
   }
 
   validate(text, type) {
-    
     if (type === "username") {
       //case that email is not correct format
       if (text == "") {
-     
         this.setState({
           emailValidator: false,
 
@@ -52,31 +50,27 @@ export default class Form extends Component {
           passwordValidator: false,
           password: text
         });
-        
       } else {
         this.setState({
           passwordValidator: true,
           password: text
         });
-        
       }
     }
 
     this.setState({
-      signupDisabled: this.state.passwordValidator && this.state.emailValidator ? true : false
+      signupDisabled:
+        this.state.passwordValidator && this.state.emailValidator ? true : false
     });
   }
 
-  CanSignUp()
-  {
-    if(this.state.email == "" || this.state.password == "")
-    {
-      return true; 
+  CanSignUp() {
+    if (this.state.email == "" || this.state.password == "") {
+      return true;
     }
 
     return this.signupDisabled;
   }
-
 
   signup(email, password) {
     firebase
@@ -86,34 +80,38 @@ export default class Form extends Component {
         this.props.navigation.navigate("Login");
       })
       .catch(error => {
-        if(error.code == "auth/invalid-email")
-        {
-          this.setState({emailValidator: false, error:true, errorMessage: error.message}); 
-          this.emailInput.focus(); 
-
-        }
-        else if (error.code== "auth/weak-password")
-        {
-          this.setState({passwordValidator: false, error:true, errorMessage: error.message}); 
+        if (error.code == "auth/invalid-email") {
+          this.setState({
+            emailValidator: false,
+            error: true,
+            errorMessage: error.message
+          });
+          this.emailInput.focus();
+        } else if (error.code == "auth/weak-password") {
+          this.setState({
+            passwordValidator: false,
+            error: true,
+            errorMessage: error.message
+          });
           this.passwordInput.focus();
-          
-
-        }
-        else if(error.code == "auth/email-already-in-use")
-        {
-          this.setState({emailValidator: false, error: true, errorMessage: error.message})
+        } else if (error.code == "auth/email-already-in-use") {
+          this.setState({
+            emailValidator: false,
+            error: true,
+            errorMessage: error.message
+          });
           this.emailInput.focus();
         }
         this.state.error = true;
-       
       });
   }
   render() {
+    // const errorText = <Text> this.state.errorMessage </Text>;
     return (
       <View style={styles.container}>
         <TextInput
-        ref = {input => (this.emailInput = input)}
-        placeholder={this.state.error ? this.state.errorMessage : "Username or email"}
+          ref={input => (this.emailInput = input)}
+          placeholder={"Username or email"}
           keyboardType="email-address"
           placeholderTextColor="rgba(255,255,255,0.7)"
           returnKeyType="next"
@@ -123,35 +121,29 @@ export default class Form extends Component {
           onSubmitEditing={() => {
             this.passwordInput.focus();
           }}
-          style={[
-            styles.inputBox,
-            !this.state.emailValidator ? styles.error : null
-          ]}
+          style={styles.inputBox}
         />
 
         <TextInput
-          placeholder={this.state.error ? this.state.errorMessage : "Password"}
+          placeholder={"Password"}
           secureTextEntry
           returnKeyType="next"
           placeholderTextColor="rgba(255,255,255,0.7)"
-          style={[
-            styles.inputBoxPas,
-            !this.state.passwordValidator ? styles.error : null
-          ]}
+          style={styles.inputBoxPas}
           onChangeText={text => this.validate(text, "password")}
           ref={input => (this.passwordInput = input)}
         />
-
-        <TouchableOpacity style={styles.button}>
-          <Button
-            style={styles.button}
-          
-            disabled={this.CanSignUp()}
-            title="Signup"
-            onPress={() => this.signup(this.state.email, this.state.password)}
-          >
-            Signup
-          </Button>
+        <View>
+          <Text style={styles.error}>
+            {!this.state.passwordValidator || !this.state.emailValidator
+              ? this.state.errorMessage
+              : ""}
+          </Text>
+        </View>
+        <TouchableOpacity style={styles.button}
+        onPress={() => this.signup(this.state.email, this.state.password)}
+        >
+          <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
     );
@@ -173,9 +165,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   error: {
-    borderColor: "red",
-    borderWidth: 3, 
-  
+    color: "red",
+    alignSelf: "center"
   },
   inputBoxPas: {
     height: 40,
@@ -189,12 +180,9 @@ const styles = StyleSheet.create({
   button: {
     width: 300,
     backgroundColor: "#1c313a",
-    fontSize: 16,
-    fontWeight: "500",
     borderRadius: 25,
-    color: "#ffffff",
     marginVertical: 10,
-    paddingVertical: 8
+    paddingVertical: 12
   },
   buttonText: {
     fontSize: 16,
