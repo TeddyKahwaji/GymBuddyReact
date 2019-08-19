@@ -11,18 +11,30 @@ import {
 
 
 
+
 export default class App extends Component {
-  
-  
-  checkIfLoggedIn = () => {
+ 
+ state ={
+   authFlag: true
+ }
+  checkIfLoggedIn = () => 
+  {
+    
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.props.navigation.navigate("Login");
+
+      if(this.state.authFlag)
+      {
+        this.setState({authFlag:false})
+        if (user) {
        
-      } else {
-        this.props.navigation.navigate("Signup");
-       
+          this.props.navigation.navigate("Login");
+    
+        } else {
+          this.props.navigation.navigate("Signup");
+        
+        }
       }
+     
     });
   };
   

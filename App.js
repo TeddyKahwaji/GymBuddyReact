@@ -12,7 +12,8 @@ import * as firebase from "firebase";
 import Signup from './screens/Signup';
 
 import Login from './screens/Login';
-
+import BodyScreen from './screens/BodyScreen'
+import SignUpForm from './components/SignUpForm'
 import RootNavigator from "./navigation"
 import {firebaseConfig} from "./components/config"
 

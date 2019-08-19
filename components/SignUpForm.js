@@ -3,14 +3,11 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar,
   TextInput,
-  TouchableOpacity,
-  Button
-} from "react-native";
+  TouchableOpacity} from "react-native";
 
 import * as firebase from "firebase";
-import { stringLiteral } from "@babel/types";
+
 
 export default class Form extends Component {
   constructor() {
@@ -29,7 +26,7 @@ export default class Form extends Component {
   }
 
   validate(text, type) {
-    if (type === "username") {
+    if (type === "username") { 
       //case that email is not correct format
       if (text == "") {
         this.setState({
@@ -75,11 +72,13 @@ export default class Form extends Component {
   signup(email, password) {
     firebase
       .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        this.props.navigation.navigate("Login");
+       
+         this.props.navigation.navigate("BodyScreen");
       })
       .catch(error => {
+        console.warn(error);
         if (error.code == "auth/invalid-email") {
           this.setState({
             emailValidator: false,
@@ -106,7 +105,14 @@ export default class Form extends Component {
       });
   }
   render() {
-    // const errorText = <Text> this.state.errorMessage </Text>;
+    const errorText = (
+      <Text style={styles.error}>
+        {!this.state.emailValidator || !this.state.passwordValidator
+          ? this.state.errorMessage
+          : ""}
+      </Text>
+    );
+
     return (
       <View style={styles.container}>
         <TextInput
@@ -133,15 +139,10 @@ export default class Form extends Component {
           onChangeText={text => this.validate(text, "password")}
           ref={input => (this.passwordInput = input)}
         />
-        <View>
-          <Text style={styles.error}>
-            {!this.state.passwordValidator || !this.state.emailValidator
-              ? this.state.errorMessage
-              : ""}
-          </Text>
-        </View>
-        <TouchableOpacity style={styles.button}
-        onPress={() => this.signup(this.state.email, this.state.password)}
+        <View>{errorText}</View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.signup(this.state.email, this.state.password)}
         >
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>

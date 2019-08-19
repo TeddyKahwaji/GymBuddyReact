@@ -15,11 +15,11 @@ import RadioForm, {
 import Logo from "../components/Logo";
 import Form from "../components/LoginForm";
 import { Dropdown } from "react-native-material-dropdown";
-
-
-
+import * as firebase from "firebase";
 
 export default class BodyCompForm extends Component {
+  rootRef = firebase.database().ref();
+  MetricInfo = this.rootRef.child("MetricInfo");
   state = {
     heightFt: null,
     heightin: null,
@@ -27,15 +27,23 @@ export default class BodyCompForm extends Component {
     ProgramPreference: null,
     initialClick: null
   };
- 
-  Verify= () => 
-  {
-    
-     this.setState({initialClick:1})
-     
-  }
+
+  Verify = () => {
+    console.warn(firebase.auth().currentUser);
+    fetch("https://gymbuddyreact.firebaseio.com/metrics" +".json", {
+      method: "POST",
+      body: JSON.stringify({
+        heightFt: this.state.heightFt,
+        heightin: this.state.heightin,
+        weight: this.state.weight,
+        ProgramPreference: this.state.ProgramPreference == null ? 0 : this.state.ProgramPreference
+      })
+    })
+    .then(res =>console.warn(res))
+    .catch(err=>console.warn(err));
+   
+  };
   CanContinue = () => {
-    
     return (
       this.state.heightFt != null &&
       this.state.heightin != null &&
@@ -209,6 +217,7 @@ export default class BodyCompForm extends Component {
               radio_props={radio_props}
               animation={true}
               buttonInnerColor={"white"}
+              initial={0}
               onPress={value => this.setState({ ProgramPreference: value })}
             />
           </View>
@@ -221,24 +230,15 @@ export default class BodyCompForm extends Component {
                 alignContent: "center",
                 justifyContent: "center"
               }}
-            >
-              
-            </View>
-           
-           
+            />
           </View>
-          
         </View>
 
-        <View style={{alignContent: "center", marginLeft: 45, marginTop: 15 }}> 
-     
-        <TouchableOpacity
-              style={styles.button}
-             onPress={this.Verify}
-            >
-              <Text style={styles.buttonText}>Continue</Text>
-            </TouchableOpacity>
-            {errorText}
+        <View style={{ alignContent: "center", marginLeft: 45, marginTop: 15 }}>
+          <TouchableOpacity style={styles.button} onPress={() => this.Verify()}>
+            <Text style={styles.buttonText}>Continue</Text>
+          </TouchableOpacity>
+          {errorText}
         </View>
       </View>
     );

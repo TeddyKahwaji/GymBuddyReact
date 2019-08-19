@@ -16,7 +16,7 @@ export default class Signup extends Component {
     return(
       <KeyboardAvoidingView  style ={styles.container}>
         <Logo/>
-        <Form type="Signup"/>
+        <Form type="Signup" navigation={this.props.navigation}/>
         <View style={styles.signupTextCont}>
             <Text style={styles.signupText}>Already have an account?</Text>
             <Text style={styles.signUpButton}

@@ -2,16 +2,21 @@ import { createStackNavigator } from "react-navigation";
 import Login from "../screens/Login";
 import Signup from "../screens/Signup";
 import LoadingScreen from "../screens/LoadingScreen";
-import LoginForm from "../components/LoginForm"
 import BodyScreen from "../screens/BodyScreen"
+import LoginForm from "../components/LoginForm";
+import SignUpForm from "../components/SignUpForm";
+
 export default createStackNavigator(
   {
     //Browse: Browse, 
-    BodyScreen: BodyScreen,
+ 
     LoadingScreen: LoadingScreen,
+    
+    BodyScreen: BodyScreen,
     Login:Login,
     Signup: Signup, 
-
+    LoginForm: LoginForm,
+    SignUpForm: SignUpForm
     
    
   }, 

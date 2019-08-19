@@ -1,22 +1,28 @@
-import { createStackNavigator, createBottomTabNavigator } from "react-navigation";
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from "react-navigation";
 import Login from "../screens/Login";
 import Signup from "../screens/Signup";
 import LoadingScreen from "../screens/LoadingScreen";
-import BodyScreen from '../screens/BodyScreen'
+import BodyScreen from "../screens/BodyScreen";
+import LoginForm from "../components/LoginForm";
+import SignUpForm from "../components/SignUpForm";
 export default createStackNavigator(
   {
-    BodyScreen:BodyScreen,
-      LoadingScreen:LoadingScreen,
-    Login:Login,
-    Signup:Signup,
+    LoadingScreen: LoadingScreen,
+    BodyScreen: BodyScreen,
 
+    Login: Login,
+    Signup: Signup,
 
-   
-  }, 
+    LoginForm: LoginForm,
+    SignUpForm: SignUpForm
+  },
   {
-    headerMode: 'none',
-    header: 'none',
-    mode: 'modal'
+    headerMode: "none",
+    header: "none",
+    mode: "modal"
   }
 );
 
